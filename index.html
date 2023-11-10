@@ -11,13 +11,27 @@
             height: 200px;
             width: 200px;
         }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        input {
+            margin: 10px;
+            display: block;
+        }
     </style>
 </head>
 
 <body>
 
-    <div id="app">
-        {{ greeting }}
+    <div id="app" v-cloak>
+        <login-form />
+
+
+
+
+
         <input @keyup.enter="greet(greeting + ' this is keyboard event')" v-model="greeting" />
 
 
@@ -47,6 +61,27 @@
                 },
                 greet(greeting) {
                     console.log(greeting)
+                }
+            }
+        })
+
+        app.component('login-form', {
+            template: `
+            <form @submit="handleSubmit">
+                <h1>{{ title }}</h1>
+                <input type="email" />
+                <input type="password" />
+                <button>Log in</button>
+            </form>
+            `,
+            data() {
+                return {
+                    title: 'Login Form'
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    console.log("submitted")
                 }
             }
         })
