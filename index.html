@@ -11,14 +11,11 @@
             height: 200px;
             width: 200px;
         }
-<<<<<<< HEAD
-=======
 
         [v-cloak] {
             display: none;
         }
 
->>>>>>> 6b0d2a959543c50a0415fe15cb0f617e2a5a7826
         input {
             margin: 10px;
             display: block;
@@ -28,16 +25,8 @@
 
 <body>
 
-<<<<<<< HEAD
-    <div id="app">
-        <custom-form/>
-=======
     <div id="app" v-cloak>
         <login-form />
->>>>>>> 6b0d2a959543c50a0415fe15cb0f617e2a5a7826
-
-
-
 
 
         <input @keyup.enter="greet(greeting + ' this is keyboard event')" v-model="greeting" />
@@ -77,19 +66,35 @@
             template: `
             <form @submit="handleSubmit">
                 <h1>{{ title }}</h1>
-                <input type="email" />
-                <input type="password" />
+                  
+                
+                <custom-input 
+                    v-for="(input, i) in inputs"
+                    :key="i"
+                     v-model="input.modelValue"
+                     :label="input.label"
+                     :type="input.type"
+                     />
                 <button>Log in</button>
             </form>
             `,
+            components: ['custom-input'],
             data() {
                 return {
-                    title: 'Login Form'
+                    title: 'Login Form',
+                    inputs: [
+                        { label: 'Email', modelValue: '', type: 'email'},
+                        { label: 'Password', modelValue: '', type: 'password' }
+                    ],
+                    email: '',
+                    password: '',
+                    emailLabel: 'Email',
+                    passwordLabel: 'Password'
                 }
             },
             methods: {
                 handleSubmit() {
-                    console.log("submitted")
+                    console.log(this.inputs[0].modelValue, this.inputs[1].modelValue)
                 }
             }
         })
@@ -117,6 +122,37 @@
                 }
             }
         })
+        
+        app.component('custom-input', {
+            template: `
+               <label>
+                    {{ label }}
+                    <input type="text" v-model="inputValue"/>
+                    </label>
+            `,
+
+            props: ['label', 'type', 'modelValue'],
+           computed: {
+             inputValue: {
+
+              get() {
+                return this.modelValue
+                },
+                set(value) {
+                    
+                    // Emmit an event so other can listen to
+                    //1st argument is the type of event
+                    //2nd argument is the value we want to pass
+                    this.$emit('update:modelValue', value)
+                }
+           } 
+        }
+            // data(){
+            //     return {
+            //         inputValue: ''
+            //     }
+            // }
+        }) 
         app.mount('#app')
     </script>
 </body>
