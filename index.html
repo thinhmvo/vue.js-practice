@@ -59,6 +59,13 @@
                 greet(greeting) {
                     console.log(greeting)
                 }
+            },
+            // Lifecycle hooks
+            beforeCreate() {
+                console.log('Before Create')
+            },
+            updated() {
+                console.log('Updated')
             }
         })
 
