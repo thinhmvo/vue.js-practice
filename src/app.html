@@ -184,13 +184,12 @@
           }
         },
         methods: {
-          addToCart(type) {
-            this.cart[type] += this.inventory[type]
-            console.log(this.cart)
+          addToCart(type, quantity) {
+            this.cart[type] += this.inventory[type];
+            console.log(this.cart);
           }
         }
       })
-
       app.mount('#app')
     </script>
   </body>
