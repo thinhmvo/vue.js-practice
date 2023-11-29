@@ -41,7 +41,7 @@
 
         <div class="recommended">
 
-          <div v-for="(product,i) in inventory.slice(0,3)"  class="card" :key="i" >
+          <div v-for="(product,i) in inventory.slice(0,3)"  class="card" :key="product.id" >
             <div class="card-title">
               {{ product.name }}
             </div>
@@ -69,13 +69,13 @@
                     <label>Quantity:</label>
                   </div>
                   <div class="cell">
-                    <input type="number" v-model.number="inventory[i].quantity">
+                    <input type="number" v-model.number="product.quantity">
                   </div>
                 </div>
               </form>
             </div>
             <div class="card-footer">
-              <button @click="addToCart('carrots')" class="btn btn-light">
+              <button @click="addToCart(product.name, i)" class="btn btn-light">
                 Add to cart
               </button>
             </div>
@@ -90,6 +90,7 @@
       v-show="showSideBar" 
       :toggle="toggleSideBar"
       :cart="cart"
+      :inventory="inventory"
       />
 
       <footer>
@@ -104,16 +105,15 @@
           return {
             showSideBar: false,
             inventory: [],
-            cart: {
-              carrots: 0,
-              pineapples: 0,
-              cherries: 0
-            }
+            cart: {}
           }
         },
         methods: {
-          addToCart(type, quantity) {
-            this.cart[type] += this.inventory[type];
+          addToCart(name, index) {
+            if(!this.cart[name]) {
+              this.cart[name] = 0;
+            }
+                this.cart[name] += this.inventory[index].quantity;
             console.log(this.cart);
           },
           toggleSideBar() {
@@ -134,7 +134,7 @@
       
 
       app.component('sidebar', {
-        props: ['toggle', 'cart'],
+        props: ['toggle', 'cart', 'inventory'],
         computed: {
           cartTotal() {
             return (this.cart.carrots * 4.82).toFixed(2);
@@ -164,11 +164,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="(quantity, key, i) in cart" :key="i">
                   <td><i class="icofont-carrot icofont-3x"></i></td>
-                  <td>Carrot</td>
+                  <td>{{key}}</td>
                   <td>$1.00</td>
-                  <td class="center">{{ cart.carrots }}</td>
+                  <td class="center">{{ quantity }}</td>
                   <td>$ {{ (cart.carrots * 4.82).toFixed(2) }}</td>
                   <td class="center">
                     <button class="btn btn-light cart-remove">
