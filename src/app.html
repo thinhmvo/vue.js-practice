@@ -41,7 +41,7 @@
 
         <div class="recommended">
 
-          <div v-for="(product,i) in inventory.splice(0,3)"  class="card" :key="i" >
+          <div v-for="(product,i) in inventory.slice(0,3)"  class="card" :key="i" >
             <div class="card-title">
               {{ product.name }}
             </div>
