@@ -150,15 +150,25 @@
             //Keys are the names of the products
             // We can use the keys to get the price of each product
             // Then we can use reduce to sum all the prices
-            const names = Object.keys(this.cart)
+            // const names = Object.keys(this.cart)
             
             //Object.values returns an array of values from an object
             // Since cart is an object, we can use Object.values to get an array of values
             // Then we can use reduce to sum all the values
             // Reduce uses an accumulator and a current value
-            const total = Object.values(this.cart).reduce((acc, curr, index) => {
-              return acc + (curr * this.getPrice(names[index]))
-            })
+
+            //Because objects are unordered and arrays are ordered, it display incurate total
+            // const total = Object.values(this.cart).reduce((acc, curr, index) => {
+            //   return acc + (curr * this.getPrice(names[index]))
+            // })
+            
+            
+            //To fix the inacturate total, we can use Object.entries
+            //Object.entries returns an array of arrays
+            
+            const total = Object.entries(this.cart).reduce((acc, curr, index) => {
+              return acc + (curr[1] * this.getPrice(curr[0]))
+            }, 0)
 
             return total.toFixed(2)
           }
@@ -204,7 +214,7 @@
 
             <p class="center"><em>No items in cart</em></p>
             <div class="spread">
-              <span><strong>Total:</strong> \${{cartTotal}}</span>
+              <span><strong>Total:</strong> \${{calculateTotal()}}</span>
               <button class="btn btn-light">Checkout</button>
             </div>
           </div>
